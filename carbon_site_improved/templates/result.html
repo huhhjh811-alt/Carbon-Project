@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Sonuç</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container narrow">
+    <h2>Hesaplama Sonucu</h2>
+    {% if error %}
+      <p class="error">{{ error }}</p>
+    {% else %}
+      <p class="big">Toplam yıllık tahmini CO₂: <strong>{{ total }}</strong> kg</p>
+      <p>Kişi başı: <strong>{{ per_person }}</strong> kg</p>
+
+      <div class="level {{ level }}">
+        {% if level == 'good' %}İyi durum — düşük emisyon{% elif level == 'medium' %}Orta{% else %}Yüksek{% endif %}
+      </div>
+
+      <canvas id="breakdownChart" width="400" height="200"></canvas>
+
+      <script>
+        const ctx = document.getElementById('breakdownChart').getContext('2d');
+        const data = {
+          labels: {{ breakdown.keys()|list }},
+          datasets: [{
+            label: 'kg CO2 / yıl',
+            data: {{ breakdown.values()|list }},
+            borderWidth: 1
+          }]
+        };
+        new Chart(ctx, {
+          type: 'bar',
+          data: data,
+          options: {
+            responsive: true,
+            maintainAspectRatio: false
+          }
+        });
+      </script>
+
+      <a class="btn" href="/tips">Azaltma İpuçları</a>
+      <a class="btn ghost" href="/">Ana Sayfa</a>
+    {% endif %}
+  </div>
+</body>
+</html>

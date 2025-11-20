@@ -1,0 +1,38 @@
+:root{
+  --accent: #16a34a;
+  --bg: rgba(255,255,255,0.04);
+  --card: rgba(255,255,255,0.06);
+}
+*{box-sizing:border-box}
+body{font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial; margin:0; color:#111; background:linear-gradient(180deg,#e8f5e9 0%, #f7fff7 100%);}
+.container{max-width:1000px;margin:0 auto;padding:24px;}
+.narrow{max-width:760px;margin:32px auto;padding:24px;background:var(--bg);border-radius:12px;box-shadow:0 8px 30px rgba(4,4,4,0.06);}
+.site-header{background:linear-gradient(90deg,#0ea5a4,#16a34a);color:white;padding:36px 0;border-bottom-left-radius:20px;border-bottom-right-radius:20px;}
+.site-header .container{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.site-header h1{margin:0;font-size:28px;letter-spacing:0.2px}
+.tag{opacity:0.95}
+nav{display:flex;gap:10px}
+.btn{display:inline-block;padding:10px 16px;border-radius:10px;background:white;color:#063; text-decoration:none;font-weight:600;transition:transform .18s, box-shadow .18s;box-shadow:0 4px 14px rgba(16,185,129,0.12)}
+.btn:hover{transform:translateY(-3px)}
+.btn.ghost{background:transparent;color:white;border:1px solid rgba(255,255,255,0.3)}
+.hero{display:grid;grid-template-columns:1fr;gap:18px;margin-top:24px}
+.card{background:linear-gradient(180deg,rgba(255,255,255,0.9),rgba(255,255,255,0.85));padding:20px;border-radius:12px}
+.cards{display:flex;gap:12px;margin-top:12px;flex-wrap:wrap}
+.mini{flex:1;min-width:180px;text-align:center;padding:14px}
+.mini img{width:64px;height:64px;opacity:0.9}
+form.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+label{display:block;font-size:14px}
+input[type=number]{width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;margin-top:6px}
+.form-actions{grid-column:1/-1;display:flex;gap:10px;justify-content:flex-end;margin-top:8px}
+.big{font-size:20px}
+.level{padding:10px;border-radius:10px;color:white;display:inline-block;margin:10px 0}
+.level.good{background:linear-gradient(90deg,#16a34a,#4ade80)}
+.level.medium{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
+.level.bad{background:linear-gradient(90deg,#ef4444,#fb7185)}
+.tips{list-style:none;padding:0}
+.tips li{background:var(--card);padding:12px;border-radius:10px;margin-bottom:8px}
+.error{color:#900}
+@media(min-width:900px){
+  .site-header .container{flex-direction:row;align-items:center;justify-content:space-between}
+  .hero{grid-template-columns:1fr 1fr}
+}
