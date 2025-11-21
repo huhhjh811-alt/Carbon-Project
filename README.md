@@ -1,143 +1,101 @@
-# 🌍 Karbon Ayak İzi Hesaplama Web Sitesi
+# Karbon Ayak İzi Hesaplama Aracı
 
-Bu proje, kullanıcının ev içi enerji tüketim alışkanlıklarına göre **karbon ayak izini hesaplayan** basit ve çok sayfalı bir **Flask web uygulamasıdır**.
+Bu proje, kullanıcıların günlük enerji tüketimi, ulaşım alışkanlıkları ve ev içi aktivitelerine dayanarak yıllık karbon ayak izini hesaplayan Flask tabanlı bir web uygulamasıdır.
 
-Kullanıcı sırasıyla:
+Uygulama, kullanıcıdan aldığı verileri işleyerek sonucu hem sayısal verilerle hem de interaktif grafiklerle sunar. Ayrıca kullanıcı deneyimini artırmak için modern bir arayüz ve karanlık mod (Dark Mode) desteği içerir.
 
-* Ampul sayısı,
-* Elektronik eşya sayısı,
-* Elektrik tüketimi (kWh) gibi bilgileri girerek,
+## Özellikler
 
-kişisel karbon ayak izi sonucunu öğrenir.
+* **Backend:** Python ve Flask ile geliştirilmiş hafif mimari.
+* **Arayüz:** CSS ile özelleştirilmiş, responsive ve modern tasarım.
+* **Karanlık Mod:** Tarayıcı hafızasında (localStorage) tutulan Aydınlık/Karanlık tema desteği.
+* **Görselleştirme:** Chart.js kütüphanesi ile detaylı sonuç grafikleri.
+* **Çok Sayfalı Yapı:** Adım adım veri girişi sağlayan kullanıcı dostu akış.
+* **Bilgilendirme:** Sonuçlara göre enerji tasarrufu ipuçları.
 
----
+## Proje Yapısı
 
-## 🚀 Özellikler
-
-* Flask ile geliştirilmiş backend
-* Çok sayfalı yapı (index → lights → electronics → form → result → end)
-* Basit ve anlaşılır hesaplama mantığı
-* Responsive tasarım ve sade UI
-* SVG ikonlar ve görsel destekli sonuç ekranı
-
----
-
-## 📁 Proje Klasör Yapısı
-
-```
+```text
 project/
-│ app.py
-│ requirements.txt
 │
-├── templates/
-│   │ index.html
-│   │ lights.html
-│   │ electronics.html
-│   │ form.html
-│   │ result.html
-│   │ end.html
+├── app.py                  # Ana uygulama dosyası
+├── requirements.txt        # Gerekli Python kütüphaneleri
 │
-└── static/
-    ├── css/
-    │   └── style.css
-    └── img/
-        ├── back.jpg
-        ├── home.svg
-        ├── light.svg
-        ├── battery.svg
-        ├── planet_good.svg
-        ├── planet_medium.svg
-        └── planet_bad.svg
-```
+├── static/
+│   ├── css/
+│   │   └── style.css       # Tüm stiller ve tema ayarları
+│   ├── js/                 # Chart.js ve tema scriptleri
+│   └── img/                # SVG ikonlar ve görseller
+│
+└── templates/              # HTML Şablonları
+    ├── index.html          # Karşılama ekranı
+    ├── form.html           # Veri giriş formu
+    ├── result.html         # Grafik destekli sonuç ekranı
+    └── tips.html           # Tasarruf önerileri
 
----
+Kurulum
+Projeyi yerel ortamınızda çalıştırmak için aşağıdaki adımları izleyebilirsiniz.
 
-## 🛠 Kurulum ve Çalıştırma
+1. Depoyu klonlayın:
 
-### 1. Depoyu klonlayın
+Bash
 
-```bash
-git clone https://github.com/KULLANICI_ADI/REPO_ADI.git
+git clone [https://github.com/KULLANICI_ADI/REPO_ADI.git](https://github.com/KULLANICI_ADI/REPO_ADI.git)
 cd REPO_ADI
-```
+2. Sanal ortam oluşturun (Önerilen):
 
-### 2. Gerekli paketleri yükleyin
+Bash
 
-Python ortamı oluşturarak yüklemeniz önerilir:
+python -m venv venv
+# Windows için:
+venv\Scripts\activate
+# Mac/Linux için:
+source venv/bin/activate
+3. Gereksinimleri yükleyin:
 
-```bash
+Bash
+
 pip install -r requirements.txt
-```
+4. Uygulamayı başlatın:
 
-### 3. Uygulamayı başlatın
+Bash
 
-```bash
 python app.py
-```
+Tarayıcınızda http://127.0.0.1:5000 adresine giderek uygulamayı görüntüleyebilirsiniz.
 
-### 4. Tarayıcıda çalıştırın
+Kullanım
+Başlangıç: Ana sayfadan hesaplama aracını başlatın.
 
-```
-http://127.0.0.1:5000/
-```
+Veri Girişi: Form ekranında elektrik tüketimi, ampul sayısı, araç kullanımı ve uçuş bilgileri gibi verileri girin.
 
----
+Tema Seçimi: İsterseniz sağ üst köşedeki ikon ile arayüzü karanlık moda alabilirsiniz.
 
-## 📘 Kullanım Akışı
+Sonuç: Hesaplama sonrası çıkan ekranda karbon ayak izi seviyenizi (İyi/Orta/Kötü) ve tüketim dağılımını grafik üzerinde inceleyin.
 
-1. **Ana sayfa** → "Başla" butonuna basılır.
-2. **Lights sayfası** → Ampul bilgisi alınır.
-3. **Electronics sayfası** → Elektronik cihaz bilgisi alınır.
-4. **Form sayfası** → Tüm veriler forma girilir.
-5. **Result sayfası** → Hesaplanan karbon ayak izi ve görsel sonuç gösterilir.
-6. **End sayfası** → Süreç tamamlanır.
+Öneriler: Karbon ayak izinizi düşürmek için sunulan ipuçlarını okuyun.
 
----
+Hesaplama Yöntemi
+Proje, girilen verileri belirli emisyon katsayıları ile çarparak yıllık CO₂ miktarını (kg cinsinden) hesaplar.
 
-## 🔢 Hesaplama Mantığı
+Örnek formül:
 
-Hesaplama örnek projedeki mantığa benzer şekilde yapılır:
+Python
 
-```python
-result = electricity * 0.23 + bulbs * 5 + devices * 12
-```
+toplam_emisyon = (elektrik * 0.233) + (ampul * 5) + (cihaz * 12) + (ulasim_emisyonu)
+Değerlendirme Skalası:
 
-Sonuç seviyeleri:
+< 2000 kg: İyi (Çevre Dostu)
 
-* **0 – 200** → İyi
-* **200 – 400** → Orta
-* **400+** → Kötü
+2000 - 5000 kg: Orta (Ortalama Tüketim)
 
----
+> 5000 kg: Kötü (Yüksek Emisyon)
 
-## 🎨 Tasarım
+Yapılacaklar (To-Do)
+[ ] SQLite veritabanı entegrasyonu ile geçmiş sorguları kaydetme.
 
-* Arka plan görseli
-* Yuvarlatılmış butonlar
-* Koyulaştırılmış form alanları
-* Sonuç ekranında seviyeye göre SVG ikon değişimi
+[ ] Sonuçların PDF olarak indirilmesi.
 
-İstersen TailwindCSS ile modern bir tasarıma dönüştürebilirim.
+[ ] Daha detaylı ulaşım (toplu taşıma vs.) hesaplamaları.
 
----
-
-## 🧩 Geliştirme Önerileri
-
-Proje kolayca genişletilebilir:
-
-* Kullanıcı geçmişi kaydı
-* Daha doğru karbon hesaplama formülü
-* API entegrasyonu
-* Karanlık mod
-* PWA dönüşümü
-
-İstersen bu özelliklerden birini ekleyebilirim.
-
----
-
-## 🤝 Katkıda Bulunma
-
-Pull request gönderebilir veya issue açabilirsiniz.
-
----
-
+Lisans
+Bu proje eğitim amaçlı geliştirilmiştir. Kaynak göstererek dilediğiniz gibi kullanabilir ve geliştirebilirsiniz.
