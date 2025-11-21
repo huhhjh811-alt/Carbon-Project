@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Hesaplama Formu</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <div class="container narrow">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+      <h2 style="margin: 0;">Karbon Hesabı İçin Bilgileri Gir</h2>
+      <div style="display: flex; gap: 12px; align-items: center;">
+        <a class="btn ghost" href="/tips" style="text-decoration: none;">İpuçları</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">🌙</button>
+      </div>
+    </div>
+    <form action="/calculate" method="post" class="form-grid">
+      <label>Elektrik tüketimi (ortalama aylık kWh):
+        <input type="number" name="electricity" value="350" step="1" required>
+      </label>
+      <label>Ampul sayısı:
+        <input type="number" name="bulbs" value="10" required>
+      </label>
+      <label>Elektronik cihaz sayısı:
+        <input type="number" name="devices" value="8" required>
+      </label>
+      <label>Araba km/hafta:
+        <input type="number" name="car_km_week" value="150" required>
+      </label>
+      <label>Kısa uçuş (yılda):
+        <input type="number" name="flights_short" value="0" required>
+      </label>
+      <label>Uzun uçuş (yılda):
+        <input type="number" name="flights_long" value="0" required>
+      </label>
+      <label>Hane halkı büyüklüğü:
+        <input type="number" name="household" value="1" min="1" required>
+      </label>
+      <div class="form-actions">
+        <button class="btn" type="submit">Hesapla</button>
+        <a class="btn ghost" href="/">Geri</a>
+      </div>
+    </form>
+  </div>
+  <script>
+    const themeToggle = document.getElementById('themeToggle');
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    themeToggle.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+    themeToggle.addEventListener('click', () => {
+      const theme = document.documentElement.getAttribute('data-theme');
+      const newTheme = theme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+    });
+  </script>
+</body>
+</html>

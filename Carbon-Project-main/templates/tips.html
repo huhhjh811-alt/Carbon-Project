@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Enerji Tasarrufu İpuçları</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <div class="container narrow">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+      <h2 style="margin: 0;">Enerji Tasarrufu ve Emisyon Azaltma İpuçları</h2>
+      <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">🌙</button>
+    </div>
+    <ul class="tips">
+      {% for t in tips %}
+        <li>
+          <strong>{{ t[0] }}</strong>
+          <p>{{ t[1] }}</p>
+        </li>
+      {% endfor %}
+    </ul>
+    <a class="btn" href="/">Ana Sayfa</a>
+  </div>
+  <script>
+    const themeToggle = document.getElementById('themeToggle');
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    themeToggle.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+    themeToggle.addEventListener('click', () => {
+      const theme = document.documentElement.getAttribute('data-theme');
+      const newTheme = theme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+    });
+  </script>
+</body>
+</html>

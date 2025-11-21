@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Grafikler ve İstatistikler</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container narrow">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+      <h2 style="margin: 0;">Grafikler ve İstatistikler</h2>
+      <div style="display: flex; gap: 12px; align-items: center;">
+        <a class="btn ghost" href="/tips" style="text-decoration: none;">İpuçları</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">🌙</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Genel Bakış</h3>
+      <p style="margin-top: 12px; color: var(--text-secondary);">Karbon ayak izinizi hesaplamak için lütfen ana sayfadan hesaplama formunu doldurun. Hesaplama sonrasında detaylı grafikler ve istatistikler burada görüntülenecektir.</p>
+    </div>
+    <div class="chart-container" style="margin-top: 24px;">
+      <canvas id="sampleChart"></canvas>
+    </div>
+    <div style="margin-top: 24px;">
+      <a class="btn" href="/form">Hesaplama Yap</a>
+      <a class="btn ghost" href="/">Ana Sayfa</a>
+    </div>
+  </div>
+  <script>
+    const themeToggle = document.getElementById('themeToggle');
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    themeToggle.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+    themeToggle.addEventListener('click', () => {
+      const theme = document.documentElement.getAttribute('data-theme');
+      const newTheme = theme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+      location.reload();
+    });
+    const ctx = document.getElementById('sampleChart').getContext('2d');
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const colors = [
+      'rgba(139, 92, 246, 0.8)',
+      'rgba(16, 185, 129, 0.8)',
+      'rgba(14, 165, 233, 0.8)',
+      'rgba(245, 158, 11, 0.8)'
+    ];
+    new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Elektrik', 'Ulaşım', 'Isıtma', 'Diğer'],
+        datasets: [{
+          data: [40, 30, 20, 10],
+          backgroundColor: colors,
+          borderColor: isDark ? '#374151' : '#ffffff',
+          borderWidth: 3
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              color: isDark ? '#f9fafb' : '#1f2937',
+              padding: 16,
+              font: {
+                size: 14,
+                weight: '500'
+              }
+            }
+          },
+          tooltip: {
+            backgroundColor: isDark ? '#1f2937' : '#ffffff',
+            titleColor: isDark ? '#f9fafb' : '#1f2937',
+            bodyColor: isDark ? '#d1d5db' : '#6b7280',
+            borderColor: isDark ? '#374151' : '#e5e7eb',
+            borderWidth: 1,
+            padding: 12
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
+

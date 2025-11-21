@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Elektronik Cihazlar</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <div class="container narrow">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+      <h2 style="margin: 0;">Elektronik Cihazlar ve Enerji Yönetimi</h2>
+      <div style="display: flex; gap: 12px; align-items: center;">
+        <a class="btn ghost" href="/tips" style="text-decoration: none;">İpuçları</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">🌙</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Standby Modu</h3>
+      <p style="margin-top: 12px; color: var(--text-secondary);">Kullanılmayan elektronik cihazları tamamen kapatın veya fişten çekin. Standby modunda bile cihazlar enerji tüketmeye devam eder ve yıllık elektrik faturanızı artırır.</p>
+    </div>
+    <div class="card" style="margin-top: 16px;">
+      <h3>Enerji Verimliliği Etiketi</h3>
+      <p style="margin-top: 12px; color: var(--text-secondary);">Yeni cihaz alırken A+++ veya A++ enerji verimliliği sınıfına sahip ürünleri tercih edin. Bu cihazlar daha az enerji tüketir ve uzun vadede hem çevre hem de bütçe dostudur.</p>
+    </div>
+    <div class="card" style="margin-top: 16px;">
+      <h3>Akıllı Kullanım</h3>
+      <p style="margin-top: 12px; color: var(--text-secondary);">Bilgisayar ve televizyon gibi cihazlarda otomatik kapanma özelliklerini aktif edin. Ekran parlaklığını düşürmek ve gereksiz uygulamaları kapatmak da enerji tasarrufu sağlar.</p>
+    </div>
+    <div style="margin-top: 24px;">
+      <a class="btn" href="/form">Hesaplamaya Dön</a>
+      <a class="btn ghost" href="/">Ana Sayfa</a>
+    </div>
+  </div>
+  <script>
+    const themeToggle = document.getElementById('themeToggle');
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    themeToggle.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+    themeToggle.addEventListener('click', () => {
+      const theme = document.documentElement.getAttribute('data-theme');
+      const newTheme = theme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+    });
+  </script>
+</body>
+</html>
+
