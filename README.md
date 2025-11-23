@@ -15,7 +15,7 @@ Uygulama, kullanıcıdan aldığı verileri işleyerek sonucu hem sayısal veril
 
 ## Güncelleme (22.11.25)
 
-## Ufak hatalar düzeltildi
+# Ufak hatalar düzeltildi
 
 ## Güncelleme (23.11.25) :
 
