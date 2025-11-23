@@ -13,6 +13,13 @@ Uygulama, kullanıcıdan aldığı verileri işleyerek sonucu hem sayısal veril
 * **Çok Sayfalı Yapı:** Adım adım veri girişi sağlayan kullanıcı dostu akış.
 * **Bilgilendirme:** Sonuçlara göre enerji tasarrufu ipuçları.
 
+## Güncelleme (23.11.25) :
+# Siyah / Beyaz / Noel temaları eklendi
+# Bazı hatalar düzeltildi
+# Noel geri sayımı eklendi
+# Kar teması eklendi
+# Hareketli geçişler / Tema
+
 ## Proje Yapısı
 
 ```text
@@ -99,3 +106,4 @@ Yapılacaklar (To-Do)
 
 Lisans
 Bu proje eğitim amaçlı geliştirilmiştir. Kaynak göstererek dilediğiniz gibi kullanabilir ve geliştirebilirsiniz.
+'''
