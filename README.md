@@ -19,6 +19,7 @@ Uygulama, kullanıcıdan aldığı verileri işleyerek sonucu hem sayısal veril
 # Noel geri sayımı eklendi
 # Kar teması eklendi
 # Hareketli geçişler / Tema
+# Hesaplama geçmişi görüntüleme ve daha fazlası
 
 ## Proje Yapısı
 
