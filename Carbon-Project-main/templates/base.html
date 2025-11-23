@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{% block title %}Karbon Ayak İzi Hesaplayıcı{% endblock %}</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="stylesheet" href="/static/css/snow.css">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <h1>Karbon Ayak İzi Hesaplayıcı</h1>
+      <p class="tag">Günlük yaşamın CO₂ etkisini basitçe hesapla ve azaltmak için adımlar at.</p>
+      <nav>
+        {% block nav_links %}
+        <a class="btn" href="/form">Hesapla</a>
+        <a class="btn ghost" href="/tips">İpuçları</a>
+        {% endblock %}
+        <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">🌙</button>
+        <button class="newyear-toggle" id="newyearToggle" aria-label="2026'ya Hazır mısın?" title="2026'ya Hazır mısın?">🎉</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">© Karbon Hesaplayıcı — Demo proje</div>
+  </footer>
+
+  <div class="newyear-modal" id="newyearModal">
+    <div class="newyear-modal-content">
+      <button class="newyear-close" id="newyearClose">&times;</button>
+      <h1 class="newyear-title">Mutlu Yıllar! / Happy New Year!</h1>
+      <div class="countdown-container">
+        <div class="countdown-item">
+          <span class="countdown-value" id="days">00</span>
+          <span class="countdown-label">Gün</span>
+        </div>
+        <div class="countdown-item">
+          <span class="countdown-value" id="hours">00</span>
+          <span class="countdown-label">Saat</span>
+        </div>
+        <div class="countdown-item">
+          <span class="countdown-value" id="minutes">00</span>
+          <span class="countdown-label">Dakika</span>
+        </div>
+        <div class="countdown-item">
+          <span class="countdown-value" id="seconds">00</span>
+          <span class="countdown-label">Saniye</span>
+        </div>
+      </div>
+      <canvas id="confettiCanvas"></canvas>
+    </div>
+  </div>
+
+  <audio id="newyearAudio" loop>
+    <source src="/static/audio/newyear.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const themeToggle = document.getElementById('themeToggle');
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    if (themeToggle) {
+      themeToggle.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+      themeToggle.addEventListener('click', () => {
+        const theme = document.documentElement.getAttribute('data-theme');
+        const newTheme = theme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+        if (typeof location !== 'undefined') {
+          location.reload();
+        }
+      });
+    }
+  </script>
+  {% block extra_js %}{% endblock %}
+  <script src="/static/js/snow.js"></script>
+  <script src="/static/js/newyear.js"></script>
+</body>
+</html>
+

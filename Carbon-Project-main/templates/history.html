@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Hesaplama Geçmişi</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="stylesheet" href="/static/css/snow.css">
+</head>
+<body>
+  <div class="container narrow">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+      <h2 style="margin: 0;">Hesaplama Geçmişi</h2>
+      <div style="display: flex; gap: 12px; align-items: center;">
+        <button class="btn ghost" id="clearHistory" style="text-decoration: none; border: none; cursor: pointer;">Geçmişi Temizle</button>
+        <a class="btn ghost" href="/tips" style="text-decoration: none;">İpuçları</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">🌙</button>
+        <button class="newyear-toggle" id="newyearToggle" aria-label="2026'ya Hazır mısın?" title="2026'ya Hazır mısın?">🎉</button>
+      </div>
+    </div>
+    <div id="historyContainer">
+      <div class="history-empty" id="emptyState" style="display: none;">
+        <p style="text-align: center; color: var(--text-secondary); font-size: 18px; padding: 48px;">
+          Henüz hesaplama yapmadınız. İlk hesaplamanızı yapmak için <a href="/form" style="color: var(--primary);">form sayfasına</a> gidin.
+        </p>
+      </div>
+      <table class="history-table" id="historyTable" style="display: none;">
+        <thead>
+          <tr>
+            <th>Tarih</th>
+            <th>Toplam CO₂ (kg)</th>
+            <th>Kişi Başı (kg)</th>
+            <th>Rozet</th>
+            <th>Seviye</th>
+          </tr>
+        </thead>
+        <tbody id="historyTableBody">
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top: 24px;">
+      <a class="btn" href="/form">Yeni Hesaplama</a>
+      <a class="btn ghost" href="/">Ana Sayfa</a>
+    </div>
+  </div>
+  <script>
+    const themeToggle = document.getElementById('themeToggle');
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    themeToggle.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+    themeToggle.addEventListener('click', () => {
+      const theme = document.documentElement.getAttribute('data-theme');
+      const newTheme = theme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+    });
+
+    function loadHistory() {
+      const history = JSON.parse(localStorage.getItem('carbonHistory') || '[]');
+      const tableBody = document.getElementById('historyTableBody');
+      const emptyState = document.getElementById('emptyState');
+      const historyTable = document.getElementById('historyTable');
+
+      if (history.length === 0) {
+        emptyState.style.display = 'block';
+        historyTable.style.display = 'none';
+        return;
+      }
+
+      emptyState.style.display = 'none';
+      historyTable.style.display = 'table';
+      tableBody.innerHTML = '';
+
+      history.forEach((entry, index) => {
+        const row = document.createElement('tr');
+        const levelText = entry.level === 'good' ? 'İyi' : entry.level === 'medium' ? 'Orta' : 'Yüksek';
+        const levelClass = entry.level === 'good' ? 'level-good' : entry.level === 'medium' ? 'level-medium' : 'level-bad';
+        
+        row.innerHTML = `
+          <td>${entry.date}</td>
+          <td>${entry.total.toFixed(2)}</td>
+          <td>${entry.perPerson.toFixed(2)}</td>
+          <td><span class="badge badge-${entry.badgeColor}">${entry.badge}</span></td>
+          <td><span class="level-badge ${levelClass}">${levelText}</span></td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    document.getElementById('clearHistory').addEventListener('click', () => {
+      if (confirm('Tüm geçmişi silmek istediğinize emin misiniz?')) {
+        localStorage.removeItem('carbonHistory');
+        loadHistory();
+      }
+    });
+
+    loadHistory();
+  </script>
+  <div class="newyear-modal" id="newyearModal">
+    <div class="newyear-modal-content">
+      <button class="newyear-close" id="newyearClose">&times;</button>
+      <h1 class="newyear-title">Mutlu Yıllar! / Happy New Year!</h1>
+      <div class="countdown-container">
+        <div class="countdown-item">
+          <span class="countdown-value" id="days">00</span>
+          <span class="countdown-label">Gün</span>
+        </div>
+        <div class="countdown-item">
+          <span class="countdown-value" id="hours">00</span>
+          <span class="countdown-label">Saat</span>
+        </div>
+        <div class="countdown-item">
+          <span class="countdown-value" id="minutes">00</span>
+          <span class="countdown-label">Dakika</span>
+        </div>
+        <div class="countdown-item">
+          <span class="countdown-value" id="seconds">00</span>
+          <span class="countdown-label">Saniye</span>
+        </div>
+      </div>
+      <canvas id="confettiCanvas"></canvas>
+    </div>
+  </div>
+  <audio id="newyearAudio" loop>
+    <source src="/static/audio/newyear.mp3" type="audio/mpeg">
+  </audio>
+  <script src="/static/js/snow.js"></script>
+  <script src="/static/js/newyear.js"></script>
+</body>
+</html>
+

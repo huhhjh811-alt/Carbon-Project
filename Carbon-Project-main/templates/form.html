@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Hesaplama Formu</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="stylesheet" href="/static/css/snow.css">
+</head>
+<body>
+  <div class="container narrow">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+      <h2 style="margin: 0;">Karbon Hesabı İçin Bilgileri Gir</h2>
+      <div style="display: flex; gap: 12px; align-items: center;">
+        <a class="btn ghost" href="/tips" style="text-decoration: none;">İpuçları</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">🌙</button>
+        <button class="newyear-toggle" id="newyearToggle" aria-label="2026'ya Hazır mısın?" title="2026'ya Hazır mısın?">🎉</button>
+      </div>
+    </div>
+    <form action="/calculate" method="post" class="form-grid">
+      <label class="fade-in-up" style="animation-delay: 0.2s;">Elektrik tüketimi (ortalama aylık kWh):
+        <div class="input-wrapper">
+          <input type="number" name="electricity" value="350" step="1" required>
+        </div>
+      </label>
+      <label class="fade-in-up" style="animation-delay: 0.3s;">Ampul sayısı:
+        <div class="input-wrapper">
+          <input type="number" name="bulbs" value="10" required>
+        </div>
+      </label>
+      <label class="fade-in-up" style="animation-delay: 0.4s;">Elektronik cihaz sayısı:
+        <div class="input-wrapper">
+          <input type="number" name="devices" value="8" required>
+        </div>
+      </label>
+      <label class="fade-in-up" style="animation-delay: 0.5s;">Araba km/hafta:
+        <div class="input-wrapper">
+          <input type="number" name="car_km_week" value="150" required>
+        </div>
+      </label>
+      <label class="fade-in-up" style="animation-delay: 0.6s;">Kısa uçuş (yılda):
+        <div class="input-wrapper">
+          <input type="number" name="flights_short" value="0" required>
+        </div>
+      </label>
+      <label class="fade-in-up" style="animation-delay: 0.7s;">Uzun uçuş (yılda):
+        <div class="input-wrapper">
+          <input type="number" name="flights_long" value="0" required>
+        </div>
+      </label>
+      <label class="fade-in-up" style="animation-delay: 0.8s;">Hane halkı büyüklüğü:
+        <div class="input-wrapper">
+          <input type="number" name="household" value="1" min="1" required>
+        </div>
+      </label>
+      <div class="form-actions">
+        <button class="btn" type="submit">Hesapla</button>
+        <a class="btn ghost" href="/">Geri</a>
+      </div>
+    </form>
+  </div>
+  <script>
+    const themeToggle = document.getElementById('themeToggle');
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    themeToggle.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+    themeToggle.addEventListener('click', () => {
+      const theme = document.documentElement.getAttribute('data-theme');
+      const newTheme = theme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+    });
+  </script>
+  <div class="newyear-modal" id="newyearModal">
+    <div class="newyear-modal-content">
+      <button class="newyear-close" id="newyearClose">&times;</button>
+      <h1 class="newyear-title">Mutlu Yıllar! / Happy New Year!</h1>
+      <div class="countdown-container">
+        <div class="countdown-item">
+          <span class="countdown-value" id="days">00</span>
+          <span class="countdown-label">Gün</span>
+        </div>
+        <div class="countdown-item">
+          <span class="countdown-value" id="hours">00</span>
+          <span class="countdown-label">Saat</span>
+        </div>
+        <div class="countdown-item">
+          <span class="countdown-value" id="minutes">00</span>
+          <span class="countdown-label">Dakika</span>
+        </div>
+        <div class="countdown-item">
+          <span class="countdown-value" id="seconds">00</span>
+          <span class="countdown-label">Saniye</span>
+        </div>
+      </div>
+      <canvas id="confettiCanvas"></canvas>
+    </div>
+  </div>
+  <audio id="newyearAudio" loop>
+    <source src="/static/audio/newyear.mp3" type="audio/mpeg">
+  </audio>
+  <script src="/static/js/snow.js"></script>
+  <script src="/static/js/newyear.js"></script>
+</body>
+</html>

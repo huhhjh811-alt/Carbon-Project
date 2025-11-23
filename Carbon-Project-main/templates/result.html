@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Sonuç</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="stylesheet" href="/static/css/snow.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container narrow print-container">
+    <div class="no-print" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+      <h2 style="margin: 0;">Hesaplama Sonucu</h2>
+      <div style="display: flex; gap: 12px; align-items: center;">
+        <a class="btn ghost" href="/tips" style="text-decoration: none;">İpuçları</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">🌙</button>
+        <button class="newyear-toggle" id="newyearToggle" aria-label="2026'ya Hazır mısın?" title="2026'ya Hazır mısın?">🎉</button>
+      </div>
+    </div>
+    {% if error %}
+      <p class="error">{{ error }}</p>
+    {% else %}
+      <div class="certificate-header fade-in-up" style="animation-delay: 0.2s;">
+        <h1 class="certificate-title">Karbon Ayak İzi Karnesi</h1>
+        <div class="badge badge-{{ badge_color }}">
+          {{ badge }}
+        </div>
+      </div>
+
+      <div class="result-stats fade-in-up" style="animation-delay: 0.3s;">
+        <div class="stat-item">
+          <span class="stat-label">Toplam Yıllık CO₂</span>
+          <span class="stat-value" id="totalCounter">{{ total }}</span>
+          <span class="stat-unit">kg</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Kişi Başı CO₂</span>
+          <span class="stat-value" id="perPersonCounter">{{ per_person }}</span>
+          <span class="stat-unit">kg</span>
+        </div>
+      </div>
+
+      <div class="level {{ level }} fade-in-up" style="animation-delay: 0.4s;">
+        {% if level == 'good' %}İyi durum — düşük emisyon{% elif level == 'medium' %}Orta{% else %}Yüksek{% endif %}
+      </div>
+
+      <div class="chart-container no-print">
+        <canvas id="breakdownChart"></canvas>
+      </div>
+
+      <div class="result-actions no-print">
+        <button class="btn" onclick="window.print()">Sertifikayı Yazdır / PDF</button>
+        <a class="btn ghost" href="/tips">Azaltma İpuçları</a>
+        <a class="btn ghost" href="/history">Geçmiş</a>
+        <a class="btn ghost" href="/">Ana Sayfa</a>
+      </div>
+    {% endif %}
+  </div>
+  <script>
+    const themeToggle = document.getElementById('themeToggle');
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    if (themeToggle) {
+      themeToggle.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+      themeToggle.addEventListener('click', () => {
+        const theme = document.documentElement.getAttribute('data-theme');
+        const newTheme = theme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+        location.reload();
+      });
+    }
+
+    {% if not error %}
+    const breakdownData = {{ breakdown|tojson }};
+    const totalValue = {{ total }};
+    const perPersonValue = {{ per_person }};
+    const badgeValue = '{{ badge }}';
+    const badgeColorValue = '{{ badge_color }}';
+    const levelValue = '{{ level }}';
+
+    function animateCounter(elementId, targetValue, duration = 2000) {
+      const element = document.getElementById(elementId);
+      if (!element) return;
+      const start = 0;
+      const increment = targetValue / (duration / 16);
+      let current = start;
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= targetValue) {
+          element.textContent = targetValue.toFixed(2);
+          clearInterval(timer);
+        } else {
+          element.textContent = current.toFixed(2);
+        }
+      }, 16);
+    }
+
+    setTimeout(() => {
+      animateCounter('totalCounter', totalValue);
+      animateCounter('perPersonCounter', perPersonValue);
+    }, 300);
+
+    const historyEntry = {
+      date: new Date().toLocaleString('tr-TR'),
+      total: totalValue,
+      perPerson: perPersonValue,
+      badge: badgeValue,
+      badgeColor: badgeColorValue,
+      level: levelValue
+    };
+
+    let history = JSON.parse(localStorage.getItem('carbonHistory') || '[]');
+    history.unshift(historyEntry);
+    if (history.length > 50) {
+      history = history.slice(0, 50);
+    }
+    localStorage.setItem('carbonHistory', JSON.stringify(history));
+
+    const ctx = document.getElementById('breakdownChart');
+    if (ctx) {
+      const chartCtx = ctx.getContext('2d');
+      const labels = Object.keys(breakdownData);
+      const values = Object.values(breakdownData);
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      const colors = [
+        'rgba(139, 92, 246, 0.8)',
+        'rgba(16, 185, 129, 0.8)',
+        'rgba(14, 165, 233, 0.8)',
+        'rgba(245, 158, 11, 0.8)',
+        'rgba(236, 72, 153, 0.8)'
+      ];
+      const hoverColors = [
+        'rgba(139, 92, 246, 1)',
+        'rgba(16, 185, 129, 1)',
+        'rgba(14, 165, 233, 1)',
+        'rgba(245, 158, 11, 1)',
+        'rgba(236, 72, 153, 1)'
+      ];
+      new Chart(chartCtx, {
+        type: 'doughnut',
+        data: {
+          labels: labels,
+          datasets: [{
+            data: values,
+            backgroundColor: colors,
+            borderColor: isDark ? '#374151' : '#ffffff',
+            borderWidth: 3,
+            hoverBackgroundColor: hoverColors,
+            hoverBorderWidth: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                color: isDark ? '#f9fafb' : '#1f2937',
+                padding: 16,
+                font: {
+                  size: 14,
+                  weight: '500'
+                }
+              }
+            },
+            tooltip: {
+              backgroundColor: isDark ? '#1f2937' : '#ffffff',
+              titleColor: isDark ? '#f9fafb' : '#1f2937',
+              bodyColor: isDark ? '#d1d5db' : '#6b7280',
+              borderColor: isDark ? '#374151' : '#e5e7eb',
+              borderWidth: 1,
+              padding: 12,
+              displayColors: true,
+              callbacks: {
+                label: function(context) {
+                  const label = context.label || '';
+                  const value = context.parsed || 0;
+                  const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                  const percentage = ((value / total) * 100).toFixed(1);
+                  return label + ': ' + value + ' kg (' + percentage + '%)';
+                }
+              }
+            }
+          },
+          animation: {
+            animateRotate: true,
+            animateScale: true,
+            duration: 1000
+          }
+        }
+      });
+    }
+    {% endif %}
+  </script>
+  <div class="newyear-modal" id="newyearModal">
+    <div class="newyear-modal-content">
+      <button class="newyear-close" id="newyearClose">&times;</button>
+      <h1 class="newyear-title">Mutlu Yıllar! / Happy New Year!</h1>
+      <div class="countdown-container">
+        <div class="countdown-item">
+          <span class="countdown-value" id="days">00</span>
+          <span class="countdown-label">Gün</span>
+        </div>
+        <div class="countdown-item">
+          <span class="countdown-value" id="hours">00</span>
+          <span class="countdown-label">Saat</span>
+        </div>
+        <div class="countdown-item">
+          <span class="countdown-value" id="minutes">00</span>
+          <span class="countdown-label">Dakika</span>
+        </div>
+        <div class="countdown-item">
+          <span class="countdown-value" id="seconds">00</span>
+          <span class="countdown-label">Saniye</span>
+        </div>
+      </div>
+      <canvas id="confettiCanvas"></canvas>
+    </div>
+  </div>
+  <audio id="newyearAudio" loop>
+    <source src="/static/audio/newyear.mp3" type="audio/mpeg">
+  </audio>
+  <script src="/static/js/snow.js"></script>
+  <script src="/static/js/newyear.js"></script>
+</body>
+</html>
