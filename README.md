@@ -15,16 +15,16 @@ Uygulama, kullanıcıdan aldığı verileri işleyerek sonucu hem sayısal veril
 
 ## Güncelleme (22.11.25)
 
-# Ufak hatalar düzeltildi
+ Ufak hatalar düzeltildi
 
 ## Güncelleme (23.11.25) :
 
-# Siyah / Beyaz / Noel temaları eklendi
-# Bazı hatalar düzeltildi
-# Noel geri sayımı eklendi
-# Kar teması eklendi
-# Hareketli geçişler / Tema
-# Hesaplama geçmişi görüntüleme ve daha fazlası
+ Siyah / Beyaz / Noel temaları eklendi
+ Bazı hatalar düzeltildi
+ Noel geri sayımı eklendi
+ Kar teması eklendi
+ Hareketli geçişler / Tema
+ Hesaplama geçmişi görüntüleme ve daha fazlası
 
 ## Proje Yapısı
 
