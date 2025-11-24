@@ -19,8 +19,11 @@ Uygulama, kullanıcıdan aldığı verileri işleyerek sonucu hem sayısal veril
 
 ## Güncelleme (23.11.25) :
 
-* Siyah / Beyaz / Noel temaları eklendi
+* Siyah / Beyaz temaları eklendi
 * Bazı hatalar düzeltildi
+
+## Güncelleme (24.11.25)
+
 * Noel geri sayımı eklendi
 * Kar teması eklendi
 * Hareketli geçişler / Tema
