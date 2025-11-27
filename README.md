@@ -29,6 +29,10 @@ Uygulama, kullanıcıdan aldığı verileri işleyerek sonucu hem sayısal veril
 * Hareketli geçişler / Tema
 * Hesaplama geçmişi görüntüleme ve daha fazlası
 
+## Güncelleme (25.11.25)
+
+Hatalar bitti
+
 ## Proje Yapısı
 
 ```text
